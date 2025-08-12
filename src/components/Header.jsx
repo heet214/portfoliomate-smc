@@ -1,14 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useMatch } from 'react-router-dom';
-
-export const stakeholderData = [
-    { title: 'Companies', count: 59, imageUrl: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2232&auto=format&fit=crop', description: "All startups, Companies, Organizations will be here" },
-    { title: 'Investors', count: 926, imageUrl: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=2070&auto=format&fit=crop', description: "All VCs, Angel Investors will be here" },
-    { title: 'Individuals', count: 311, imageUrl: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2070&auto=format&fit=crop', description: "Individual stakeholders and contacts" },
-    { title: 'Universities', count: 18, imageUrl: 'https://images.unsplash.com/flagged/photo-1554473675-d0904f3cbf38?q=80&w=2070&auto=format&fit=crop', description: "Educational and research institutions" },
-    { title: 'Operators', count: 115, imageUrl: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop', description: "Operators and service providers" },
-  ];
-  
+import { companyListData } from '../data/data';
 
 // --- ICON COMPONENTS ---
 const ChevronRight = ({size=16}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>;
@@ -18,24 +10,43 @@ const ArrowLeft = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" heigh
 
 function Header({ setMobileOpen }) {
     const location = useLocation();
-    // Check if the current route matches the stakeholder list page pattern
-    const listPageMatch = useMatch('/stakeholders/:type');
+    const profileMatch = useMatch('/stakeholders/:type/:id');
 
-    // This function generates breadcrumbs for non-list pages
     const getBreadcrumbs = () => {
-        const pathnames = location.pathname.split('/').filter((x) => x);
-        if (pathnames.length === 0) return [{ name: 'Stakeholders', path: '/' }];
+        const pathnames = location.pathname.split('/').filter(x => x);
+        let breadcrumbs = [];
+
+        // Home / Stakeholder Dashboard
+        if (pathnames.length === 0) {
+            breadcrumbs.push({ name: 'Stakeholders', path: '/' });
+            return breadcrumbs;
+        }
+
+        // Stakeholder List or Profile Page
+        if (pathnames[0] === 'stakeholders') {
+            breadcrumbs.push({ name: 'Stakeholders', path: '/' });
+            
+            if (pathnames[1]) {
+                const typeName = pathnames[1].charAt(0).toUpperCase() + pathnames[1].slice(1);
+                breadcrumbs.push({ name: typeName, path: `/stakeholders/${pathnames[1]}` });
+            }
+
+            if (pathnames[2] && profileMatch) {
+                const company = companyListData.find(c => c.id.toString() === pathnames[2]);
+                if (company) {
+                    breadcrumbs.push({ name: company.name, path: location.pathname });
+                }
+            }
+            return breadcrumbs;
+        }
         
+        // Other top-level pages
         const name = pathnames[0].charAt(0).toUpperCase() + pathnames[0].slice(1);
-        return [{ name: name, path: `/${pathnames[0]}` }];
-    }
+        breadcrumbs.push({ name: name, path: `/${pathnames[0]}` });
+        return breadcrumbs;
+    };
     
     const breadcrumbs = getBreadcrumbs();
-
-    // Find stakeholder info for the dynamic header title
-    const stakeholderInfo = listPageMatch 
-        ? stakeholderData.find(s => s.title.toLowerCase() === listPageMatch.params.type) 
-        : null;
 
     return (
         <header className="flex-shrink-0 bg-white border-b border-gray-200">
@@ -45,30 +56,19 @@ function Header({ setMobileOpen }) {
                         <MenuIcon />
                     </button>
                     
-                    {/* Conditional Header Content */}
-                    {listPageMatch ? (
-                        // Header for the Stakeholder List Page
-                        <div className="flex items-center gap-3">
-                            <Link to="/" className="text-gray-500 hover:text-gray-800 p-1.5 rounded-md hover:bg-gray-100">
-                                <ArrowLeft />
-                            </Link>
-                            <h1 className="text-xl font-bold text-gray-900">
-                                {stakeholderInfo ? `${stakeholderInfo.title} (${stakeholderInfo.count})` : 'Stakeholders'}
-                            </h1>
-                        </div>
-                    ) : (
-                        // Default Breadcrumb Header
-                        <div className="hidden md:flex items-center text-sm text-gray-500">
-                            {breadcrumbs.map((crumb, index) => (
-                                <React.Fragment key={index}>
-                                    {index > 0 && <ChevronRight />}
-                                    <Link to={crumb.path} className={`px-2 py-1 rounded-md font-semibold text-gray-800`}>
-                                        {crumb.name}
-                                    </Link>
-                                </React.Fragment>
-                            ))}
-                        </div>
-                    )}
+                    <div className="hidden md:flex items-center text-sm text-gray-500">
+                        {breadcrumbs.map((crumb, index) => (
+                            <React.Fragment key={index}>
+                                {index > 0 && <ChevronRight />}
+                                <Link 
+                                    to={crumb.path} 
+                                    className={`px-2 py-1 rounded-md hover:bg-gray-100 hover:text-gray-700 ${index === breadcrumbs.length - 1 ? 'font-semibold text-gray-800' : ''}`}
+                                >
+                                    {crumb.name}
+                                </Link>
+                            </React.Fragment>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="flex items-center space-x-4">

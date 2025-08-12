@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import StakeholderPage from './pages/StakeholderPage';
 import StakeholderListPage from './pages/StakeholderListPage';
+import ProfilePage from './pages/ProfilePage'; // New Import
 import LoginPage from './pages/LoginPage';
 
 // This component defines the main layout with the sidebar and header
@@ -13,7 +14,7 @@ const AppLayout = () => {
   const [isMobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
-  // Check if the current page is a stakeholder list page
+  // Check if the current page is a stakeholder list or profile page
   const isListPage = location.pathname.startsWith('/stakeholders/');
   
   // Conditionally apply padding based on the page
@@ -45,6 +46,7 @@ function App() {
       <Route element={<AppLayout />}>
         <Route path="/" element={<StakeholderPage />} />
         <Route path="/stakeholders/:type" element={<StakeholderListPage />} />
+        <Route path="/stakeholders/:type/:id" element={<ProfilePage />} /> {/* New Profile Route */}
         
         {/* Placeholder routes for other navigation items */}
         <Route path="/dashboard" element={<div className="text-2xl font-bold">Dashboard Page</div>} />

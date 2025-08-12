@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export const stakeholderData = [
     { title: 'Companies', count: 59, imageUrl: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2232&auto=format&fit=crop', description: "All startups, Companies, Organizations will be here" },
@@ -33,7 +33,6 @@ export const stakeholderData = [
   
   export const companyListData = generateCompanyData(59);
   
-
 // --- ICON COMPONENTS ---
 const Search = ({size = 20}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;
 const FilterIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
@@ -41,6 +40,7 @@ const ExportIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" heig
 
 function StakeholderListPage() {
     const { type } = useParams();
+    const navigate = useNavigate(); // For navigation
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const itemsPerPage = 10;
@@ -64,6 +64,10 @@ function StakeholderListPage() {
         }
     };
 
+    const handleRowClick = (item) => {
+        navigate(`/stakeholders/${type}/${item.id}`);
+    };
+
     return (
         <div className="bg-white h-full">
             {/* Controls Header */}
@@ -78,7 +82,7 @@ function StakeholderListPage() {
                         value={searchTerm}
                         onChange={(e) => {
                             setSearchTerm(e.target.value);
-                            setCurrentPage(1); // Reset to first page on new search
+                            setCurrentPage(1);
                         }}
                         className="w-full h-10 pl-9 pr-3 border border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
                     />
@@ -111,7 +115,7 @@ function StakeholderListPage() {
                     </thead>
                     <tbody>
                         {paginatedData.map((item) => (
-                            <tr key={item.id} className="bg-white border-b border-gray-200 hover:bg-gray-50">
+                            <tr key={item.id} className="bg-white border-b border-gray-200 hover:bg-gray-50 cursor-pointer" onClick={() => handleRowClick(item)}>
                                 <td className="p-4"><img src={item.logo} alt={`${item.name} logo`} className="w-10 h-10 rounded-md object-cover" /></td>
                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{item.name}</td>
                                 <td className="px-6 py-4">{item.createdOn}</td>
@@ -128,7 +132,7 @@ function StakeholderListPage() {
                 {/* Mobile Card View */}
                 <div className="md:hidden p-4 space-y-4">
                     {paginatedData.map((item) => (
-                        <div key={item.id} className="bg-white border border-gray-200 rounded-lg p-4 space-y-3">
+                        <div key={item.id} className="bg-white border border-gray-200 rounded-lg p-4 space-y-3 cursor-pointer" onClick={() => handleRowClick(item)}>
                             <div className="flex items-center gap-4">
                                 <img src={item.logo} alt={`${item.name} logo`} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
                                 <div className="flex-grow">

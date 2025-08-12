@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ArrowRight = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
 
 function StakeholderCard({ title, count, description, imageUrl }) {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+    <Link to={`/stakeholders/${title.toLowerCase()}`} className="block bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden group transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       <div className="relative">
         <img 
           src={imageUrl} 
@@ -24,7 +25,7 @@ function StakeholderCard({ title, count, description, imageUrl }) {
         </div>
         <p className="mt-1 text-xs text-gray-500">{description}</p>
       </div>
-    </div>
+    </Link>
   );
 }
 

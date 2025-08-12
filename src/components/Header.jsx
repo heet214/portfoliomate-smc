@@ -20,7 +20,7 @@ function Header({ setMobileOpen }) {
         </div>
 
         <div className="flex items-center space-x-4">
-            <button className="flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 h-10 rounded-md text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            <button className="flex items-center justify-center bg-[#312E81] hover:bg-indigo-700 text-white font-semibold px-4 h-10 rounded-md text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                 <PlusIcon />
                 <span className="ml-2 hidden sm:inline">New Stakeholder</span>
             </button>

@@ -15,7 +15,7 @@ const LogOut = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="
 
 const NavItem = ({ to, icon, children, isExpanded }) => {
   const baseClasses = `flex items-center h-10 px-4 my-1 rounded-md transition-colors duration-200 text-sm font-medium ${!isExpanded ? 'justify-center' : ''}`;
-  const activeClasses = "bg-indigo-600 text-white";
+  const activeClasses = "bg-[#312E81] text-white";
   const inactiveClasses = "text-gray-500 hover:bg-gray-100";
 
   return (

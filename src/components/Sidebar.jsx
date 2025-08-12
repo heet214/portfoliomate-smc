@@ -13,6 +13,10 @@ const MessageSquare = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" h
 const SettingsIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73 2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>;
 const LogOut = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>;
 
+// Toggle icons
+const ChevronLeft = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>;
+const ChevronRight = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>;
+
 const NavItem = ({ to, icon, children, isExpanded }) => {
   const baseClasses = `flex items-center h-10 px-4 my-1 rounded-md transition-colors duration-200 text-sm font-medium ${!isExpanded ? 'justify-center' : ''}`;
   const activeClasses = "bg-[#312E81] text-white";
@@ -31,8 +35,8 @@ function Sidebar({ isDesktopExpanded, setDesktopExpanded, isMobileOpen, setMobil
     <div className="flex flex-col h-full">
       <div className="p-4 flex items-center h-16">
         <div className={`flex items-center justify-center transition-all ${isDesktopExpanded ? 'w-auto' : 'w-full'}`}>
-            <img src={PortfoliomateLogo} alt="" srcset="" />
-            <span className={`font-bold text-xl whitespace-nowrap overflow-hidden transition-all text-gray-800 ${isDesktopExpanded ? 'w-auto ml-3' : 'w-0'}`}>Portfoliomate</span>
+          <img src={PortfoliomateLogo} alt="Portfoliomate Logo" className="h-12 w-12 flex-shrink-0" />
+          <span className={`font-bold text-xl whitespace-nowrap overflow-hidden transition-all text-gray-800 ${isDesktopExpanded ? 'w-auto ml-3' : 'w-0'}`}>Portfoliomate</span>
         </div>
       </div>
 
@@ -58,11 +62,24 @@ function Sidebar({ isDesktopExpanded, setDesktopExpanded, isMobileOpen, setMobil
 
   return (
     <>
+      {/* Mobile sidebar */}
       <div className={`fixed inset-y-0 left-0 z-40 w-64 bg-white text-gray-800 transform ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:hidden`} onClick={() => setMobileOpen(false)}>
         {sidebarContent}
       </div>
       {isMobileOpen && <div className="fixed inset-0 bg-black opacity-50 z-30 md:hidden" onClick={() => setMobileOpen(false)}></div>}
-      <aside className={`hidden md:flex flex-col bg-white h-full border-r border-gray-200 transition-all duration-300 ease-in-out z-20 ${isDesktopExpanded ? 'w-64' : 'w-20'}`}>
+      
+      {/* Desktop sidebar */}
+      <aside className={`hidden md:flex flex-col bg-white h-full border-r border-gray-200 transition-all duration-300 ease-in-out z-20 relative ${isDesktopExpanded ? 'w-64' : 'w-20'}`}>
+        
+        {/* Vertical handle toggle */}
+        <button
+          onClick={() => setDesktopExpanded(!isDesktopExpanded)}
+          className="hidden md:flex items-center justify-center absolute top-1/2 -translate-y-1/2 -right-3 z-30 w-7 h-14 bg-white border border-gray-200 rounded-full shadow hover:bg-gray-50 transition"
+          aria-label={isDesktopExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
+        >
+          {isDesktopExpanded ? <ChevronLeft /> : <ChevronRight />}
+        </button>
+
         {sidebarContent}
       </aside>
     </>

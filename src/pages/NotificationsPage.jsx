@@ -56,7 +56,7 @@ const NotificationsPage = () => {
 	}, [activeFilter]);
 
 	return (
-		<div className="w-full max-w-7xl mx-auto">
+		<div className="w-full max-w-7xl">
 			{/* Page header */}
 			<div className="mb-8">
 				<h1 className="text-2xl md:text-3xl text-gray-800 font-bold">Notifications</h1>

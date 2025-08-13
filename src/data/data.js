@@ -30,7 +30,6 @@ export const stakeholderData = [
   
   export const companyListData = generateCompanyData(59);
   
-  // New data for a single profile
   export const profileData = {
       id: 7,
       name: 'Tomo Corp',
@@ -64,4 +63,23 @@ export const stakeholderData = [
       { id: 11, name: 'Process Outline.pdf', date: '03 Aug 2025, 09:00 AM', isPrivate: false, category: 'Engagement Process' },
       { id: 12, name: 'Timeline.pdf', date: '03 Aug 2025, 09:15 AM', isPrivate: false, category: 'Engagement Process' },
   ];
+  
+  // New Chat Data
+  export const chatListData = [
+      { id: 1, name: 'Oliver Bearman Angel', lastMessage: 'hey', time: '10:42', avatar: 'https://randomuser.me/api/portraits/men/1.jpg', unread: 0 },
+      { id: 2, name: 'Christian Horner', lastMessage: 'hello', time: '10:30', avatar: 'https://randomuser.me/api/portraits/men/2.jpg', unread: 0 },
+      { id: 3, name: 'Test inv 2', lastMessage: 'yo yo yo', time: '10:25', avatar: 'https://randomuser.me/api/portraits/women/3.jpg', unread: 2 },
+      { id: 4, name: 'New emp', lastMessage: 'heyyyyyyyyyyyyyyyyyyyy', time: 'Mon', avatar: 'https://randomuser.me/api/portraits/men/4.jpg', unread: 0 },
+      { id: 5, name: 'Antennae Ventures Pvt Ltd', lastMessage: 'tooooooooooooooooooo', time: 'Mon', avatar: 'https://placehold.co/40x40/E2E8F0/4A5568?text=AV', unread: 0 },
+      { id: 6, name: 'Tania Acharekar', lastMessage: 'See you then!', time: 'Sun', avatar: 'https://randomuser.me/api/portraits/women/6.jpg', unread: 0 },
+      { id: 7, name: 'Ashish Jain', lastMessage: 'Thanks!', time: 'Sun', avatar: 'https://randomuser.me/api/portraits/men/7.jpg', unread: 1 },
+  ];
+  
+  export const messageData = {
+      3: [
+          { id: 1, sender: 'Test inv 2', text: 'howdy', time: '10:04', me: false },
+          { id: 2, sender: 'Me', text: 'yo yo yo', time: '10:25', me: true },
+      ],
+      // Add more conversations as needed
+  };
   

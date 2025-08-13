@@ -1,139 +1,166 @@
 import React from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-// import { UserAuth } from "../context/AuthContext"; // Assuming you have this context
-// import { toast } from "react-toastify"; // Assuming you use react-toastify
-// import logoImage from "../assets/vector.png"; // Assuming you have a logo
+import { NavLink, Link } from "react-router-dom";
+import PortfoliomateLogo from "../assets/PortfoliomateLogosidebar.svg";
 
-// --- SVG Icon Components ---
-const SquaresFourIcon = props => (
-	<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-		<rect x="3" y="3" width="7" height="7"></rect>
-		<rect x="14" y="3" width="7" height="7"></rect>
-		<rect x="14" y="14" width="7" height="7"></rect>
-		<rect x="3" y="14" width="7" height="7"></rect>
+// --- Icon Components ---
+const LayoutDashboard = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<rect width="7" height="9" x="3" y="3" rx="1" />
+		<rect width="7" height="5" x="14" y="3" rx="1" />
+		<rect width="7" height="9" x="14" y="12" rx="1" />
+		<rect width="7" height="5" x="3" y="16" rx="1" />
 	</svg>
 );
-const UsersIcon = props => (
-	<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-		<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-		<circle cx="9" cy="7" r="4"></circle>
-		<path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-		<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+const Search = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<circle cx="11" cy="11" r="8" />
+		<path d="m21 21-4.3-4.3" />
 	</svg>
 );
-const HandshakeIcon = props => (
-	<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-		<path d="M14.5 10.5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h1.14a2 2 0 0 1 1.79 1.14l1.28 2.56a2 2 0 0 1 .52 1.3L20 16.5a2 2 0 0 1-2 2h-1.58a2 2 0 0 1-1.79-1.14l-1.28-2.56a2 2 0 0 1-.52-1.3z" />
-		<path d="M9.5 13.5a2 2 0 0 0 2 2V17a2 2 0 0 0-2 2H8.36a2 2 0 0 0-1.79 1.14l-1.28 2.56a2 2 0 0 0 .52 1.3L7 21.5a2 2 0 0 0 2 2h1.58a2 2 0 0 0 1.79-1.14l1.28-2.56a2 2 0 0 0-.52-1.3z" />
+const Users = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+		<circle cx="9" cy="7" r="4" />
+		<path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+		<path d="M16 3.13a4 4 0 0 1 0 7.75" />
 	</svg>
 );
-const BellIcon = props => (
-	<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-		<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-		<path d="M13.73 21a2 2 0 0 1-3.46 0" />
+const Briefcase = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+		<path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
 	</svg>
 );
-const ChatIcon = props => (
-	<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+const CheckSquare = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<path d="m9 11 3 3L22 4" />
+		<path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+	</svg>
+);
+const Bell = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+		<path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+	</svg>
+);
+const MessageSquare = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
 		<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
 	</svg>
 );
-const TaskIcon = props => (
-	<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-		<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-		<path d="M14 2v4a2 2 0 0 0 2 2h4" />
-		<path d="m9 14 2 2 4-4" />
+const SettingsIcon = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73 2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+		<circle cx="12" cy="12" r="3" />
 	</svg>
 );
-const MegaphoneIcon = props => (
-	<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+const LogOut = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+		<polyline points="16 17 21 12 16 7" />
+		<line x1="21" x2="9" y1="12" y2="12" />
+	</svg>
+);
+const Megaphone = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
 		<path d="m3 11 18-5v12L3 14v-3z" />
 		<path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
 	</svg>
 );
-const SettingsIcon = props => (
-	<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-		<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-		<circle cx="12" cy="12" r="3" />
+
+// Toggle icons
+const ChevronLeft = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+		<path d="m15 18-6-6 6-6" />
 	</svg>
 );
-const LogoutIcon = props => (
-	<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-		<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-		<polyline points="16 17 21 12 16 7" />
-		<line x1="21" y1="12" x2="9" y2="12" />
+const ChevronRight = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+		<path d="m9 18 6-6-6-6" />
 	</svg>
 );
 
-const Sidebar = () => {
-	const navigate = useNavigate();
-	// const { logOut, user } = UserAuth(); // Assuming user object is available from context
-
-	const handleLogout = async () => {
-		try {
-			await logOut();
-			navigate("/login");
-		} catch (err) {
-			console.error(err.message);
-			toast.error("Failed to log out.");
-		}
-	};
-
-	const menuItems = [
-		{ path: "/dashboard", label: "Dashboard", icon: SquaresFourIcon },
-		{ path: "/stakeholders", label: "Stakeholders", icon: UsersIcon },
-		{ path: "/engagements", label: "Engagements", icon: HandshakeIcon },
-		{ path: "/announcements", label: "Announcements", icon: MegaphoneIcon },
-		{ path: "/notifications", label: "Notifications", icon: BellIcon, badge: true },
-		{ path: "/chat", label: "Chat", icon: ChatIcon },
-		{ path: "/tasks", label: "Task Manager", icon: TaskIcon },
-	];
+const NavItem = ({ to, icon, children, isExpanded }) => {
+	const baseClasses = `flex items-center h-10 px-4 my-1 rounded-md transition-colors duration-200 text-sm font-medium ${!isExpanded ? "justify-center" : ""}`;
+	const activeClasses = "bg-[#312E81] text-white";
+	const inactiveClasses = "text-gray-500 hover:bg-gray-100";
 
 	return (
-		<div className="bg-white h-screen w-64 fixed left-0 top-0 flex flex-col border-r border-gray-200 z-[100]">
-			{/* Header */}
-			<div className="h-20 w-full border-b border-gray-200 flex items-center px-6">
-				{/* <img src={logoImage} alt="Logo" className="h-8 w-auto mr-3" /> */}
-				<h2 className="text-xl font-bold text-gray-800">Portfoliomate</h2>
+		<NavLink to={to} end className={({ isActive }) => `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`}>
+			{icon}
+			<span className={`overflow-hidden transition-all whitespace-nowrap ${isExpanded ? "w-40 ml-3" : "w-0"}`}>{children}</span>
+		</NavLink>
+	);
+};
+
+function Sidebar({ isDesktopExpanded, setDesktopExpanded, isMobileOpen, setMobileOpen }) {
+	const sidebarContent = (
+		<div className="flex flex-col h-full">
+			<div className="p-4 flex items-center h-16">
+				<div className={`flex items-center justify-center transition-all ${isDesktopExpanded ? "w-auto" : "w-full"}`}>
+					<img src={PortfoliomateLogo} alt="Portfoliomate Logo" className="h-12 w-12 flex-shrink-0" />
+					<span className={`font-bold text-xl whitespace-nowrap overflow-hidden transition-all text-gray-800 ${isDesktopExpanded ? "w-auto ml-3" : "w-0"}`}>Portfoliomate</span>
+				</div>
 			</div>
 
-			{/* Main Content */}
-			<div className="flex-1 flex flex-col justify-between py-6">
-				{/* Navigation Menu */}
-				<div className="px-4">
-					<ul className="space-y-2">
-						{menuItems.map(({ path, label, icon: Icon, badge }) => (
-							<li key={path}>
-								<NavLink to={path} className={({ isActive }) => `flex items-center px-4 py-2.5 rounded-lg cursor-pointer transition-colors duration-200 text-sm font-medium ${isActive ? "bg-indigo-50 text-indigo-600" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"}`}>
-									<Icon className="w-5 h-5 mr-3 flex-shrink-0" />
-									<span className="whitespace-nowrap">{label}</span>
-									{/* You can add a badge component here if needed */}
-								</NavLink>
-							</li>
-						))}
-					</ul>
-				</div>
+			<nav className="flex-1 px-2 py-4 space-y-1">
+				<NavItem to="/dashboard" icon={<LayoutDashboard />} isExpanded={isDesktopExpanded}>
+					Dashboard
+				</NavItem>
+				<NavItem to="/screening" icon={<Search />} isExpanded={isDesktopExpanded}>
+					Screening
+				</NavItem>
+				<NavItem to="/stakeholders" icon={<Users />} isExpanded={isDesktopExpanded}>
+					Stakeholders
+				</NavItem>
+				<NavItem to="/engagements" icon={<Briefcase />} isExpanded={isDesktopExpanded}>
+					Engagements
+				</NavItem>
+				<NavItem to="/tasks" icon={<CheckSquare />} isExpanded={isDesktopExpanded}>
+					Task Manager
+				</NavItem>
+				<NavItem to="/notifications" icon={<Bell />} isExpanded={isDesktopExpanded}>
+					Notifications
+				</NavItem>
+				<NavItem to="/announcements" icon={<Megaphone />} isExpanded={isDesktopExpanded}>
+					Announcements
+				</NavItem>
+				<NavItem to="/chats" icon={<MessageSquare />} isExpanded={isDesktopExpanded}>
+					Chats
+				</NavItem>
+				<NavItem to="/settings" icon={<SettingsIcon />} isExpanded={isDesktopExpanded}>
+					Settings
+				</NavItem>
+			</nav>
 
-				{/* Bottom Section */}
-				<div className="px-4">
-					<ul className="space-y-2">
-						<li>
-							<NavLink to="/settings" className={({ isActive }) => `flex items-center px-4 py-2.5 rounded-lg cursor-pointer transition-colors duration-200 text-sm font-medium ${isActive ? "bg-indigo-50 text-indigo-600" : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"}`}>
-								<SettingsIcon className="w-5 h-5 mr-3 flex-shrink-0" />
-								<span className="whitespace-nowrap">Settings</span>
-							</NavLink>
-						</li>
-						<li>
-							<button onClick={handleLogout} className="w-full flex items-center px-4 py-2.5 rounded-lg cursor-pointer transition-colors duration-200 text-sm font-medium text-red-600 hover:bg-red-50">
-								<LogoutIcon className="w-5 h-5 mr-3 flex-shrink-0" />
-								<span className="whitespace-nowrap">Logout</span>
-							</button>
-						</li>
-					</ul>
-				</div>
+			<div className="p-2 border-t border-gray-200">
+				<Link to="/login" className={`flex items-center h-10 px-4 rounded-md text-gray-500 hover:bg-gray-100 transition-colors duration-200 text-sm font-medium ${!isDesktopExpanded ? "justify-center" : ""}`}>
+					<LogOut />
+					<span className={`overflow-hidden transition-all whitespace-nowrap ${isDesktopExpanded ? "w-40 ml-3" : "w-0"}`}>Logout</span>
+				</Link>
 			</div>
 		</div>
 	);
-};
+
+	return (
+		<>
+			{/* Mobile sidebar */}
+			<div className={`fixed inset-y-0 left-0 z-40 w-64 bg-white text-gray-800 transform ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out md:hidden`} onClick={() => setMobileOpen(false)}>
+				{sidebarContent}
+			</div>
+			{isMobileOpen && <div className="fixed inset-0 bg-black opacity-50 z-30 md:hidden" onClick={() => setMobileOpen(false)}></div>}
+
+			{/* Desktop sidebar */}
+			<aside className={`hidden md:flex flex-col bg-white h-full border-r border-gray-200 transition-all duration-300 ease-in-out z-20 relative ${isDesktopExpanded ? "w-64" : "w-20"}`}>
+				{/* Vertical handle toggle */}
+				<button onClick={() => setDesktopExpanded(!isDesktopExpanded)} className="hidden md:flex items-center justify-center absolute top-1/2 -translate-y-1/2 -right-3 z-30 w-7 h-14 bg-white border border-gray-200 rounded-full shadow hover:bg-gray-50 transition" aria-label={isDesktopExpanded ? "Collapse sidebar" : "Expand sidebar"}>
+					{isDesktopExpanded ? <ChevronLeft /> : <ChevronRight />}
+				</button>
+
+				{sidebarContent}
+			</aside>
+		</>
+	);
+}
 
 export default Sidebar;

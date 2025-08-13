@@ -10,6 +10,7 @@ import ChatPage from "./pages/ChatPage";
 import LoginPage from "./pages/LoginPage";
 import AnnouncementsPage from "./pages/AnnouncementsPage";
 import NotificationsPage from "./pages/NotificationsPage";
+import RegisterPage from "./pages/RegisterationPage";
 
 const AppLayout = () => {
 	const [isDesktopExpanded, setDesktopExpanded] = useState(true);
@@ -68,6 +69,7 @@ function App() {
 
 			{/* Standalone route */}
 			<Route path="/login" element={<LoginPage />} />
+			<Route path="/register" element={<RegisterPage />} />
 		</Routes>
 	);
 }

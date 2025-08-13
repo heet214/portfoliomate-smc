@@ -5,8 +5,10 @@ import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import StakeholderPage from "./pages/StakeholderPage";
 import StakeholderListPage from "./pages/StakeholderListPage";
-import ProfilePage from "./pages/ProfilePage"; // New Import
+import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
+import AnnouncementsPage from "./pages/AnnouncementsPage";
+import NotificationsPage from "./pages/NotificationsPage";
 
 // This component defines the main layout with the sidebar and header
 const AppLayout = () => {
@@ -41,7 +43,9 @@ function App() {
 			<Route element={<AppLayout />}>
 				<Route path="/" element={<StakeholderPage />} />
 				<Route path="/stakeholders/:type" element={<StakeholderListPage />} />
-				<Route path="/stakeholders/:type/:id" element={<ProfilePage />} /> {/* New Profile Route */}
+				<Route path="/stakeholders/:type/:id" element={<ProfilePage />} />
+				<Route path="/announcements" element={<AnnouncementsPage />} />
+				<Route path="/notifications" element={<NotificationsPage />} />
 				{/* Placeholder routes for other navigation items */}
 				<Route path="/dashboard" element={<div className="text-2xl font-bold">Dashboard Page</div>} />
 				<Route path="/screening" element={<div className="text-2xl font-bold">Screening Page</div>} />

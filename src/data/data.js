@@ -1,7 +1,7 @@
 export const stakeholderData = [
     { title: 'Companies', count: 59, imageUrl: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2232&auto=format&fit=crop', description: "All startups, Companies, Organizations will be here" },
     { title: 'Investors', count: 926, imageUrl: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=2070&auto=format&fit=crop', description: "All VCs, Angel Investors will be here" },
-    { title: 'Individuals', count: 311, imageUrl: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2070&auto=format&fit=crop', description: "Individual stakeholders and contacts" },
+    { title: 'Individuals', count: 311, imageUrl: 'https://images.unsplash.com/photo-150767979987-c73779587ccf?q=80&w=2070&auto=format&fit=crop', description: "Individual stakeholders and contacts" },
     { title: 'Universities', count: 18, imageUrl: 'https://images.unsplash.com/flagged/photo-1554473675-d0904f3cbf38?q=80&w=2070&auto=format&fit=crop', description: "Educational and research institutions" },
     { title: 'Operators', count: 115, imageUrl: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop', description: "Operators and service providers" },
   ];
@@ -64,7 +64,6 @@ export const stakeholderData = [
       { id: 12, name: 'Timeline.pdf', date: '03 Aug 2025, 09:15 AM', isPrivate: false, category: 'Engagement Process' },
   ];
   
-  // New Chat Data
   export const chatListData = [
       { id: 1, name: 'Oliver Bearman Angel', lastMessage: 'hey', time: '10:42', avatar: 'https://randomuser.me/api/portraits/men/1.jpg', unread: 0 },
       { id: 2, name: 'Christian Horner', lastMessage: 'hello', time: '10:30', avatar: 'https://randomuser.me/api/portraits/men/2.jpg', unread: 0 },
@@ -80,6 +79,14 @@ export const stakeholderData = [
           { id: 1, sender: 'Test inv 2', text: 'howdy', time: '10:04', me: false },
           { id: 2, sender: 'Me', text: 'yo yo yo', time: '10:25', me: true },
       ],
-      // Add more conversations as needed
   };
+  
+  // New Employee Data
+  export const employeeData = [
+      { id: 1, name: 'Abrar Ahmed', email: 'abrar54@gmail.com', role: 'Advisor / Mentor', avatar: 'https://randomuser.me/api/portraits/men/11.jpg' },
+      { id: 2, name: 'Ashish Jain', email: 'ashish@antennae.in', role: 'Investor Relations', avatar: 'https://randomuser.me/api/portraits/men/12.jpg' },
+      { id: 3, name: 'Christian Martin', email: 'chris@gmail.com', role: 'Financial Analyst', avatar: 'https://randomuser.me/api/portraits/men/13.jpg' },
+      { id: 4, name: 'Kairav Panchal', email: 'kairav@antennae.in', role: 'Associate', avatar: 'https://randomuser.me/api/portraits/men/14.jpg' },
+      { id: 5, name: 'Krishnakumar Devnally', email: 'krishnakumar@antennae.in', role: 'Co-Founder', avatar: 'https://randomuser.me/api/portraits/men/15.jpg' },
+  ];
   

@@ -1,30 +1,49 @@
 import React from 'react';
-import { Link, useLocation, useMatch } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Import useAuth
+import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const ChevronRight = ({size=16}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>;
 const MenuIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>;
-const PlusIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
+const PlusIcon = () => <svg xmlns="http://www.w.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
 
 function Header({ setMobileOpen }) {
     const location = useLocation();
-    const { user, logout } = useAuth(); // Get user and logout function
+    const { user, logout } = useAuth();
 
-    // ... (breadcrumb logic remains the same)
     const getBreadcrumbs = () => {
         const pathnames = location.pathname.split('/').filter(x => x);
         let breadcrumbs = [];
-        if (pathnames.length === 0) { breadcrumbs.push({ name: 'Stakeholders', path: '/stakeholders' }); return breadcrumbs; }
+
+        if (pathnames.length === 0) {
+            breadcrumbs.push({ name: 'Stakeholders', path: '/stakeholders' });
+            return breadcrumbs;
+        }
+
+        // Handle settings pages
+        if (pathnames[0] === 'settings') {
+            breadcrumbs.push({ name: 'Settings', path: '/settings' });
+            if (pathnames[1] === 'add-employee') {
+                breadcrumbs.push({ name: 'Add Employee', path: '/settings/add-employee' });
+            }
+            if (pathnames[1] === 'view-employees') {
+                breadcrumbs.push({ name: 'View Employees', path: '/settings/view-employees' });
+            }
+            return breadcrumbs;
+        }
+
+        // Handle stakeholder pages
         if (pathnames[0] === 'stakeholders') {
             breadcrumbs.push({ name: 'Stakeholders', path: '/stakeholders' });
             if (pathnames[1]) { const typeName = pathnames[1].charAt(0).toUpperCase() + pathnames[1].slice(1); breadcrumbs.push({ name: typeName, path: `/stakeholders/${pathnames[1]}` }); }
-            if (pathnames[2]) { breadcrumbs.push({ name: 'Profile', path: location.pathname }); } // Simplified for brevity
+            if (pathnames[2]) { breadcrumbs.push({ name: 'Profile', path: location.pathname }); }
             return breadcrumbs;
         }
+
         const name = pathnames[0].charAt(0).toUpperCase() + pathnames[0].slice(1);
         breadcrumbs.push({ name: name, path: `/${pathnames[0]}` });
         return breadcrumbs;
     };
+    
     const breadcrumbs = getBreadcrumbs();
 
     return (
@@ -46,16 +65,15 @@ function Header({ setMobileOpen }) {
                     {user && (
                         <>
                             <button className="flex items-center justify-center bg-[#312E81] hover:bg-indigo-800 text-white font-semibold px-4 h-10 rounded-md text-sm"><PlusIcon /><span className="ml-2 hidden sm:inline">New Stakeholder</span></button>
-                            <div className="relative">
-                                <button className="flex items-center space-x-3 group">
+                            <div className="relative group">
+                                <button className="flex items-center space-x-3">
                                     <img src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}&background=312E81&color=fff`} alt="User Avatar" className="w-10 h-10 rounded-full object-cover"/>
                                     <div className="hidden sm:block text-left">
                                         <div className="font-semibold text-gray-800 text-sm">{user.displayName}</div>
                                         <div className="text-xs text-gray-500">{user.roles.isPortfoliomateAdmin ? 'Platform Admin' : 'Stakeholder'}</div>
                                     </div>
                                 </button>
-                                {/* Dropdown for logout */}
-                                <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 opacity-0 group-focus-within:opacity-100 transition-opacity duration-200">
+                                <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200">
                                     <button onClick={logout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
                                 </div>
                             </div>

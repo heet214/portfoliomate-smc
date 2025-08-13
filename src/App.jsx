@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import AnnouncementsPage from "./pages/AnnouncementsPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import RegisterPage from "./pages/RegisterationPage";
+import SettingsPage from "./pages/SettingsPage";
 
 const AppLayout = () => {
 	const [isDesktopExpanded, setDesktopExpanded] = useState(true);
@@ -23,10 +24,8 @@ const AppLayout = () => {
 	const isProfilePage = location.pathname.includes('/stakeholders/') && location.pathname.split('/').length === 4;
   
 	// Remove padding for full-width pages like list, chat, and profile
-	const mainPadding = isListPage || isChatPage ? '' : 'p-4 sm:p-6 lg:p-8';
-	
-	// Set background to white for the profile page, otherwise it's transparent
-	const mainBg = isProfilePage ? 'bg-white' : '';
+	const mainPadding = isListPage || isChatPage || isProfilePage ? '' : 'p-4 sm:p-6 lg:p-8';
+	const mainBg = isProfilePage ? 'bg-white' : 'bg-gray-50';
   
 	return (
 	  <div className="flex h-screen bg-gray-50 font-sans">
@@ -57,6 +56,7 @@ function App() {
 				<Route path="/chats" element={<ChatPage />} />
 				<Route path="/announcements" element={<AnnouncementsPage />} />
 				<Route path="/notifications" element={<NotificationsPage />} />
+				<Route path="/settings/*" element={<SettingsPage />} />
 
 				{/* Placeholder routes */}
 				<Route path="/dashboard" element={<div className="text-2xl font-bold">Dashboard Page</div>} />
@@ -64,7 +64,7 @@ function App() {
 				<Route path="/engagements" element={<div className="text-2xl font-bold">Engagements Page</div>} />
 				<Route path="/tasks" element={<div className="text-2xl font-bold">Tasks Page</div>} />
 				<Route path="/notifications" element={<div className="text-2xl font-bold">Notifications Page</div>} />
-				<Route path="/settings" element={<div className="text-2xl font-bold">Settings Page</div>} />
+				
 			</Route>
 
 			{/* Standalone route */}

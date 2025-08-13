@@ -32,13 +32,13 @@ function Header({ setMobileOpen }) {
 
 		// Home / Stakeholder Dashboard
 		if (pathnames.length === 0) {
-			breadcrumbs.push({ name: "Stakeholders", path: "/" });
+			breadcrumbs.push({ name: "Stakeholders", path: "/stakeholders" });
 			return breadcrumbs;
 		}
 
 		// Stakeholder List or Profile Page
 		if (pathnames[0] === "stakeholders") {
-			breadcrumbs.push({ name: "Stakeholders", path: "/" });
+			breadcrumbs.push({ name: "Stakeholders", path: "/stakeholders" });
 
 			if (pathnames[1]) {
 				const typeName = pathnames[1].charAt(0).toUpperCase() + pathnames[1].slice(1);

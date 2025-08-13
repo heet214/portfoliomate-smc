@@ -5,14 +5,14 @@ import ProfileOverview from '../components/ProfileOverview';
 import ProfileDocuments from '../components/ProfileDocuments';
 
 // --- ICONS ---
-const LockIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+const LockIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>;
 
 const TABS = [
   { name: 'Overview', component: <ProfileOverview profile={profileData} /> },
   { name: 'Documents', component: <ProfileDocuments /> },
-  { name: 'Funding', component: <div className="text-center text-gray-500 py-8">Funding information is locked.</div>, icon: <LockIcon/> },
-  { name: 'Engagements', component: <div className="text-center text-gray-500 py-8">Engagements information is locked.</div>, icon: <LockIcon/> },
-  { name: 'Logs', component: <div className="text-center text-gray-500 py-8">Logs are locked.</div>, icon: <LockIcon/> },
+  { name: 'Funding', component: <div className="text-center text-gray-500 py-8">Funding information is locked.</div>, icon: <LockIcon /> },
+  { name: 'Engagements', component: <div className="text-center text-gray-500 py-8">Engagements information is locked.</div>, icon: <LockIcon /> },
+  { name: 'Logs', component: <div className="text-center text-gray-500 py-8">Logs are locked.</div>, icon: <LockIcon /> },
 ];
 
 function ProfilePage() {
@@ -23,13 +23,12 @@ function ProfilePage() {
   const profile = profileData;
 
   return (
-    <div className="bg-white min-h-full">
+    <div className="min-h-full">
       {/* Profile Header Section */}
-  {/* Profile Header Section */}
-  <div className="relative">
+      <div className="relative">
         {/* Gradient Banner */}
         <div className="h-32 md:h-40 bg-gradient-to-r from-purple-500 to-pink-500"></div>
-        
+
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:justify-between">
             {/* Left side: Logo overlaps, Name is below */}
@@ -47,7 +46,7 @@ function ProfilePage() {
                 </div>
               </div>
             </div>
-            
+
             {/* Right side: Edit button aligns with name */}
             <div className="mt-4 sm:mt-0 sm:pb-4 flex-shrink-0 self-end">
               <button
@@ -60,7 +59,7 @@ function ProfilePage() {
           </div>
         </div>
       </div>
-      
+
       {/* Tab Navigation & Content */}
       <div className="px-4 sm:px-6 lg:px-8 mt-6">
         <div className="border-b border-gray-200">
@@ -69,11 +68,10 @@ function ProfilePage() {
               <button
                 key={tab.name}
                 onClick={() => setActiveTab(tab.name)}
-                className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 ${
-                  activeTab === tab.name
+                className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 ${activeTab === tab.name
                     ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } ${!!tab.icon ? 'cursor-not-allowed text-gray-400' : ''}`}
+                  } ${!!tab.icon ? 'cursor-not-allowed text-gray-400' : ''}`}
                 disabled={!!tab.icon}
               >
                 {tab.icon && <span className="text-gray-400">{tab.icon}</span>}

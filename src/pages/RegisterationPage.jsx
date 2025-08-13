@@ -9,6 +9,7 @@ import { countries_data } from "../data/countries"; // Import country data
 import { sectors_data } from "../data/sectors"; // Import sector data
 import CustomSelect from "../components/CustomSelect"; // Import new component
 import CustomMultiSelect from "../components/CustomMultiSelect"; // Import new component
+import PortfoliomateLogo from "../assets/PortfoliomateLogo.svg"; // Import the logo
 
 // --- SVG Icons ---
 const BuildingIcon = props => (
@@ -157,60 +158,59 @@ const RegisterPage = () => {
 		setIsLoading(true);
 		setFirebaseError("");
 		try {
-			// const batch = writeBatch(db);
-			// const companyId = doc(collection(db, "companies")).id;
+			const batch = writeBatch(db);
+			const companyId = doc(collection(db, "companies")).id;
 
-			// const companyProfileRef = doc(db, "companies", companyId);
-			// const companyData = {
-			// 	companyName: data.companyName,
-			// 	country: data.country,
-			// 	sectors: data.sectors,
-			// 	businessDescription: data.businessDescription,
-			// 	seekingFunding: data.seekingFunding,
-			// 	previousFunding: data.previousFunding || null,
-			// 	valuation: data.valuation || null,
-			// 	createdAt: new Date(),
-			// 	memberUids: [],
-			// };
+			const companyProfileRef = doc(db, "companies", companyId);
+			const companyData = {
+				companyName: data.companyName,
+				country: data.country,
+				sectors: data.sectors,
+				businessDescription: data.businessDescription,
+				seekingFunding: data.seekingFunding,
+				previousFunding: data.previousFunding || null,
+				valuation: data.valuation || null,
+				createdAt: new Date(),
+				memberUids: [],
+			};
 
-			// const memberCreationPromises = data.members.map(async member => {
-			// 	const userCredential = await createUserWithEmailAndPassword(auth, member.email, member.password);
-			// 	const user = userCredential.user;
+			const memberCreationPromises = data.members.map(async member => {
+				const userCredential = await createUserWithEmailAndPassword(auth, member.email, member.password);
+				const user = userCredential.user;
 
-			// 	const userProfileRef = doc(db, "profiles", user.uid);
-			// 	const userProfileData = {
-			// 		ownerUid: user.uid,
-			// 		email: member.email,
-			// 		fullName: member.fullName,
-			// 		designation: member.designation,
-			// 		companyId: companyId,
-			// 		companyName: data.companyName,
-			// 		stakeholderType: selectedType.value,
-			// 		createdAt: new Date(),
-			// 	};
-			// 	batch.set(userProfileRef, userProfileData);
+				const userProfileRef = doc(db, "profiles", user.uid);
+				const userProfileData = {
+					ownerUid: user.uid,
+					email: member.email,
+					fullName: member.fullName,
+					designation: member.designation,
+					companyId: companyId,
+					companyName: data.companyName,
+					stakeholderType: selectedType.value,
+					createdAt: new Date(),
+				};
+				batch.set(userProfileRef, userProfileData);
 
-			// 	const userRef = doc(db, "users", user.uid);
-			// 	const userData = {
-			// 		uid: user.uid,
-			// 		email: member.email,
-			// 		displayName: member.fullName,
-			// 		stakeholderType: selectedType.value,
-			// 		profileId: user.uid,
-			// 		companyId: companyId,
-			// 		createdAt: new Date(),
-			// 	};
-			// 	batch.set(userRef, userData);
+				const userRef = doc(db, "users", user.uid);
+				const userData = {
+					uid: user.uid,
+					email: member.email,
+					displayName: member.fullName,
+					stakeholderType: selectedType.value,
+					profileId: user.uid,
+					companyId: companyId,
+					createdAt: new Date(),
+				};
+				batch.set(userRef, userData);
 
-			// 	return user.uid;
-			// });
+				return user.uid;
+			});
 
-			// const memberUids = await Promise.all(memberCreationPromises);
-			// companyData.memberUids = memberUids;
-			// batch.set(companyProfileRef, companyData);
+			const memberUids = await Promise.all(memberCreationPromises);
+			companyData.memberUids = memberUids;
+			batch.set(companyProfileRef, companyData);
 
-			// await batch.commit();
-			console.log("Registration successful", data);
+			await batch.commit();
 			navigate("/");
 		} catch (error) {
 			setFirebaseError(error.message.replace("Firebase: ", ""));
@@ -357,16 +357,23 @@ const RegisterPage = () => {
 
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 font-sans">
-			<div className="w-full max-w-2xl mx-auto">
+			<div className="w-full max-w-md md:max-w-2xl lg:max-w-4xl mx-auto">
 				<div className="text-center mb-8">
 					<h1 className="text-4xl font-bold text-[#312E81]">Join the Event</h1>
 					<p className="text-gray-500 mt-2">Let's get you set up. It only takes a minute.</p>
+
+					<div className="mt-8 text-center">
+						<a href="https://portfoliomate.in" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm text-gray-500 hover:text-[#312E81] transition-colors">
+							Powered by
+							<img src={PortfoliomateLogo} alt="Portfoliomate Logo" className="h-6 mx-2" /> Portfoliomate
+						</a>
+					</div>
 				</div>
 
-				<div className="bg-white p-8 rounded-2xl shadow-xl overflow-hidden relative" style={{ minHeight: "500px" }}>
+				<motion.div layout transition={{ type: "spring", stiffness: 300, damping: 30 }} className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl overflow-hidden">
 					<AnimatePresence mode="wait">
 						{step === 1 && (
-							<motion.div key="step1" variants={pageVariants} initial="initial" animate="in" exit="out" transition={pageTransition} className="max-w-md mx-auto">
+							<motion.div key="step1" variants={pageVariants} initial="initial" animate="in" exit="out" transition={pageTransition} className="max-w-lg mx-auto">
 								<h2 className="text-xl font-semibold text-center mb-6 text-gray-800">First, tell us who you are.</h2>
 								<div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
 									{stakeholderTypes.map(type => (
@@ -380,7 +387,7 @@ const RegisterPage = () => {
 						)}
 
 						{step === 2 && selectedType && (
-							<motion.div key="step2" variants={pageVariants} initial="initial" animate="in" exit="out" transition={pageTransition} className="absolute top-0 left-0 w-full h-full p-4 sm:p-8 overflow-y-auto">
+							<motion.div key="step2" variants={pageVariants} initial="initial" animate="in" exit="out" transition={pageTransition}>
 								<button onClick={() => setStep(1)} className="text-sm text-gray-500 hover:text-[#312E81] mb-4">
 									&larr; Back to selection
 								</button>
@@ -393,7 +400,7 @@ const RegisterPage = () => {
 							</motion.div>
 						)}
 					</AnimatePresence>
-				</div>
+				</motion.div>
 			</div>
 		</div>
 	);

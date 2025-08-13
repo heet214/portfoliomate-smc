@@ -15,26 +15,35 @@ const AppLayout = () => {
 	const [isDesktopExpanded, setDesktopExpanded] = useState(true);
 	const [isMobileOpen, setMobileOpen] = useState(false);
 	const location = useLocation();
-
-	// Check if current page is a stakeholder list or chat page
-	const isListPage = location.pathname.startsWith("/stakeholders/");
-	const isChatPage = location.pathname.startsWith("/chats");
-
-	// Remove padding for list or chat pages
-	const mainPadding = isListPage || isChatPage ? "" : "p-4 sm:p-6 lg:p-8";
-
+  
+	// Check the current route to apply styles conditionally
+	const isListPage = location.pathname.startsWith('/stakeholders/');
+	const isChatPage = location.pathname.startsWith('/chats');
+	const isProfilePage = location.pathname.includes('/stakeholders/') && location.pathname.split('/').length === 4;
+  
+	// Remove padding for full-width pages like list, chat, and profile
+	const mainPadding = isListPage || isChatPage ? '' : 'p-4 sm:p-6 lg:p-8';
+	
+	// Set background to white for the profile page, otherwise it's transparent
+	const mainBg = isProfilePage ? 'bg-white' : '';
+  
 	return (
-		<div className="flex h-screen bg-gray-50 font-sans">
-			<Sidebar isDesktopExpanded={isDesktopExpanded} setDesktopExpanded={setDesktopExpanded} isMobileOpen={isMobileOpen} setMobileOpen={setMobileOpen} />
-			<div className="flex-1 flex flex-col overflow-hidden">
-				<Header setMobileOpen={setMobileOpen} />
-				<main className={`flex-1 overflow-y-auto flex flex-col ${mainPadding}`}>
-					<Outlet />
-				</main>
-			</div>
+	  <div className="flex h-screen bg-gray-50 font-sans">
+		<Sidebar
+		  isDesktopExpanded={isDesktopExpanded}
+		  setDesktopExpanded={setDesktopExpanded}
+		  isMobileOpen={isMobileOpen}
+		  setMobileOpen={setMobileOpen}
+		/>
+		<div className="flex-1 flex flex-col overflow-hidden">
+		  <Header setMobileOpen={setMobileOpen} />
+		  <main className={`flex-1 overflow-y-auto flex flex-col ${mainPadding} ${mainBg}`}>
+			<Outlet /> {/* Child routes will render here */}
+		  </main>
 		</div>
+	  </div>
 	);
-};
+  };
 
 function App() {
 	return (

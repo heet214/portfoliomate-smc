@@ -115,7 +115,7 @@ const AnnouncementsPage = () => {
 	}, [searchTerm, activeFilter]);
 
 	return (
-		<div className="w-full max-w-7xl">
+		<div className="w-full max-w-7xl mx-auto">
 			{/* Page header */}
 			<div className="mb-8">
 				<h1 className="text-2xl md:text-3xl text-gray-800 font-bold">Announcements</h1>
@@ -133,17 +133,17 @@ const AnnouncementsPage = () => {
 						</div>
 						<div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
 							<div className="flex space-x-4 text-gray-500">
-								<button className="hover:text-indigo-600 transition-colors">
+								<button className="hover:text-[#312E81] transition-colors">
 									<ImageIcon className="w-5 h-5" />
 								</button>
-								<button className="hover:text-indigo-600 transition-colors">
+								<button className="hover:text-[#312E81] transition-colors">
 									<VideoIcon className="w-5 h-5" />
 								</button>
-								<button className="hover:text-indigo-600 transition-colors">
+								<button className="hover:text-[#312E81] transition-colors">
 									<MicIcon className="w-5 h-5" />
 								</button>
 							</div>
-							<button className="bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+							<button className="bg-[#312E81] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#282569] transition-colors flex items-center">
 								<PlusIcon className="w-4 h-4 mr-2" /> Post
 							</button>
 						</div>
@@ -157,13 +157,13 @@ const AnnouncementsPage = () => {
 								<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 									<SearchIcon className="w-5 h-5 text-gray-400" />
 								</div>
-								<input type="text" placeholder="Search announcements..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" />
+								<input type="text" placeholder="Search announcements..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-[#312E81] focus:border-[#312E81]" />
 							</div>
 						</div>
 						{/* Filter Buttons */}
 						<div className="mt-4 flex flex-wrap gap-2">
 							{categories.map(category => (
-								<button key={category} onClick={() => setActiveFilter(category)} className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === category ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}>
+								<button key={category} onClick={() => setActiveFilter(category)} className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === category ? "bg-[#312E81] text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}>
 									{category}
 								</button>
 							))}
@@ -189,22 +189,22 @@ const AnnouncementsPage = () => {
 							<h3 className="font-bold text-gray-800 mb-4">Trending Topics</h3>
 							<ul className="space-y-2">
 								<li>
-									<a href="#" className="text-sm text-indigo-600 hover:underline">
+									<a href="#" className="text-sm text-[#312E81] hover:underline">
 										#KeynoteSpeakers
 									</a>
 								</li>
 								<li>
-									<a href="#" className="text-sm text-indigo-600 hover:underline">
+									<a href="#" className="text-sm text-[#312E81] hover:underline">
 										#NetworkingDinner
 									</a>
 								</li>
 								<li>
-									<a href="#" className="text-sm text-indigo-600 hover:underline">
+									<a href="#" className="text-sm text-[#312E81] hover:underline">
 										#StartupPitches
 									</a>
 								</li>
 								<li>
-									<a href="#" className="text-sm text-indigo-600 hover:underline">
+									<a href="#" className="text-sm text-[#312E81] hover:underline">
 										#InnovationAwards
 									</a>
 								</li>

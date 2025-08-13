@@ -1,6 +1,5 @@
 import React from "react";
 
-// SVG Icon Components (inlined)
 const ThumbsUpIcon = props => (
 	<svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
 		<path d="M7 10v12" />
@@ -41,9 +40,9 @@ const AnnouncementCard = ({ announcement }) => {
 	const { author, role, avatar, timestamp, category, categoryColor, title, content, imageUrl, isPinned } = announcement;
 
 	return (
-		<div className={`bg-white shadow-md rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg ${isPinned ? "border-2 border-indigo-500" : ""}`}>
+		<div className={`bg-white shadow-md rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg ${isPinned ? "border-2 border-[#312E81]" : ""}`}>
 			{isPinned && (
-				<div className="bg-indigo-500 text-white text-xs font-bold px-3 py-1 flex items-center">
+				<div className="bg-[#312E81] text-white text-xs font-bold px-3 py-1 flex items-center">
 					<PinIcon className="w-4 h-4 mr-2 transform -rotate-45" />
 					PINNED
 				</div>
@@ -80,15 +79,15 @@ const AnnouncementCard = ({ announcement }) => {
 			{/* Card Footer with Actions */}
 			<div className="px-6 py-3 bg-gray-50/70 border-t border-gray-200 mt-4">
 				<div className="flex justify-between items-center text-gray-600">
-					<button className="flex items-center space-x-2 text-sm font-medium hover:text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg transition-colors">
+					<button className="flex items-center space-x-2 text-sm font-medium hover:text-[#312E81] hover:bg-[#EBEAF2] p-2 rounded-lg transition-colors">
 						<ThumbsUpIcon className="w-5 h-5" />
 						<span>Like</span>
 					</button>
-					<button className="flex items-center space-x-2 text-sm font-medium hover:text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg transition-colors">
+					<button className="flex items-center space-x-2 text-sm font-medium hover:text-[#312E81] hover:bg-[#EBEAF2] p-2 rounded-lg transition-colors">
 						<MessageSquareIcon className="w-5 h-5" />
 						<span>Comment</span>
 					</button>
-					<button className="flex items-center space-x-2 text-sm font-medium hover:text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg transition-colors">
+					<button className="flex items-center space-x-2 text-sm font-medium hover:text-[#312E81] hover:bg-[#EBEAF2] p-2 rounded-lg transition-colors">
 						<Share2Icon className="w-5 h-5" />
 						<span>Share</span>
 					</button>

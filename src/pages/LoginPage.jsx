@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Import the useAuth hook
 import logoImage from '../assets/PortfoliomateLogo.svg';
 
 // --- Reusable Input Component ---
@@ -30,9 +31,16 @@ const KeyIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height=
 function LoginPage() {
   const [authMethod, setAuthMethod] = useState('password');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState(''); // Added password state
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
+  
+  // States for handling login flow
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  
   const navigate = useNavigate();
+  const { login } = useAuth(); // Get the login function from context
 
   const handleSendOtp = (e) => {
     e.preventDefault();
@@ -42,19 +50,32 @@ function LoginPage() {
     }
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Dummy login logic
+    setError('');
+
+    // --- OTP Login (Dummy) ---
     if (authMethod === 'otp') {
-        if (otp === '123456') { // Dummy OTP check
+        if (otp === '123456') {
             console.log('OTP Login successful');
-            navigate('/stakeholders');
+            navigate('/'); // Navigate to dashboard on success
         } else {
-            alert('Invalid OTP. Please use 123456 for this demo.');
+            setError('Invalid OTP. Please use 123456 for this demo.');
         }
-    } else {
-        console.log('Password Login successful');
-        navigate('/stakeholders');
+        return;
+    }
+
+    // --- Password Login (Connected to Auth Context) ---
+    if (authMethod === 'password') {
+        setLoading(true);
+        try {
+            await login({ email, password });
+            navigate('/stakeholders'); // Navigate to dashboard on success
+        } catch (err) {
+            setError(err.message || 'Failed to login. Please check your credentials.');
+        } finally {
+            setLoading(false);
+        }
     }
   };
 
@@ -64,10 +85,10 @@ function LoginPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12">
         <div className="w-full max-w-md">
           <div className="mb-8">
-            <Link to="/" className="flex items-center text-2xl font-bold text-gray-800">
+            <div className="flex items-center text-2xl font-bold text-gray-800">
                <img src={logoImage} alt="Portfoliomate Logo" className="h-8 w-8 mr-2" />
                <span>Portfoliomate</span>
-            </Link>
+            </div>
           </div>
 
           <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
@@ -92,12 +113,14 @@ function LoginPage() {
               <>
                 <div>
                   <label htmlFor="password" className="text-sm font-medium text-gray-700 sr-only">Password</label>
-                  <AuthInput id="password" type="password" placeholder="Enter your password" icon={<LockIcon />} />
+                  <AuthInput id="password" type="password" placeholder="Enter your password" icon={<LockIcon />} value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <div className="text-right">
                   <a href="#" className="text-sm font-medium text-[#312E81] hover:text-indigo-800">Forgot Password?</a>
                 </div>
-                <button type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#312E81] hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Login</button>
+                <button type="submit" disabled={loading} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#312E81] hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
+                    {loading ? 'Signing In...' : 'Login'}
+                </button>
               </>
             )}
 
@@ -118,6 +141,8 @@ function LoginPage() {
                     <button type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#312E81] hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Verify & Login</button>
                 </>
             )}
+            
+            {error && <p className="text-sm text-red-600 text-center">{error}</p>}
           </form>
 
           <p className="mt-8 text-center text-sm text-gray-600">

@@ -12,6 +12,7 @@ import AnnouncementsPage from "./pages/AnnouncementsPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import RegisterPage from "./pages/RegisterationPage";
 import SettingsPage from "./pages/SettingsPage";
+import EditProfilePage from "./pages/EditProfilePage";
 
 const AppLayout = () => {
 	const [isDesktopExpanded, setDesktopExpanded] = useState(true);
@@ -19,12 +20,13 @@ const AppLayout = () => {
 	const location = useLocation();
 
 	// Check the current route to apply styles conditionally
+	const isEditPage = location.pathname.endsWith('/edit');
 	const isListPage = location.pathname.startsWith('/stakeholders/');
 	const isChatPage = location.pathname.startsWith('/chats');
 	const isProfilePage = location.pathname.includes('/stakeholders/') && location.pathname.split('/').length === 4;
 
 	// Remove padding for full-width pages like list, chat, and profile
-	const mainPadding = isListPage || isChatPage || isProfilePage ? '' : 'p-4 sm:p-6 lg:p-8';
+	const mainPadding = isListPage || isChatPage || isProfilePage || isEditPage ? '' : 'p-4 sm:p-6 lg:p-8';
 	const mainBg = isProfilePage ? 'bg-white' : 'bg-gray-50';
 
 	return (
@@ -37,8 +39,8 @@ const AppLayout = () => {
 			/>
 			<div className="flex-1 flex flex-col overflow-hidden">
 				<Header setMobileOpen={setMobileOpen} />
-				<main className={`flex-1 overflow-y-auto flex flex-col ${mainPadding} ${mainBg}`}>
-					<Outlet /> {/* Child routes will render here */}
+				<main className={`flex-1 flex flex-col overflow-hidden ${mainPadding} ${mainBg}`}>
+					<Outlet />
 				</main>
 			</div>
 		</div>
@@ -54,6 +56,7 @@ function App() {
 				<Route path="/stakeholders" element={<StakeholderPage />} />
 				<Route path="/stakeholders/:type" element={<StakeholderListPage />} />
 				<Route path="/stakeholders/:type/:id" element={<ProfilePage />} />
+				<Route path="/stakeholders/:type/:id/edit" element={<EditProfilePage />} /> 
 				<Route path="/chats" element={<ChatPage />} />
 				<Route path="/announcements" element={<AnnouncementsPage />} />
 				<Route path="/notifications" element={<NotificationsPage />} />

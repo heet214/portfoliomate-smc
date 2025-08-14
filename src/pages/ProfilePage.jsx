@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { profileData } from '../data/data';
 import ProfileOverview from '../components/ProfileOverview';
 import ProfileDocuments from '../components/ProfileDocuments';
@@ -18,9 +19,13 @@ const TABS = [
 function ProfilePage() {
   const { id } = useParams(); // In a real app, you'd fetch data based on this ID
   const [activeTab, setActiveTab] = useState('Overview');
+  const { user } = useAuth();
+  const location = useLocation();
 
   // In a real app, profileData would be fetched based on the `id` param
   const profile = profileData;
+
+  const canEdit = user && (user.userId === id || user.parentCompanyId === id);
 
   return (
     <div className="min-h-full">
@@ -49,12 +54,14 @@ function ProfilePage() {
 
             {/* Right side: Edit button aligns with name */}
             <div className="mt-4 sm:mt-0 sm:pb-4 flex-shrink-0 self-end">
-              <button
-                type="button"
-                className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Edit Profile
-              </button>
+              {/* {canEdit && ( // Conditionally render the edit button */}
+                <Link
+                  to={`${location.pathname}/edit`}
+                  className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+                >
+                  Edit Profile
+                </Link>
+              {/* )} */}
             </div>
           </div>
         </div>
@@ -69,8 +76,8 @@ function ProfilePage() {
                 key={tab.name}
                 onClick={() => setActiveTab(tab.name)}
                 className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 ${activeTab === tab.name
-                    ? 'border-indigo-500 text-indigo-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-indigo-500 text-indigo-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   } ${!!tab.icon ? 'cursor-not-allowed text-gray-400' : ''}`}
                 disabled={!!tab.icon}
               >

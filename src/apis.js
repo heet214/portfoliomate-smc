@@ -87,3 +87,20 @@ export const sendMessage = (messageData) => {
   return apiCall('sendMessage', messageData);
 };
   
+
+/**
+ * Fetches all announcements.
+ * @returns {Promise<Array>} A list of announcement objects.
+ */
+export const getAnnouncements = () => {
+  return apiCall('getAnnouncements', {});
+};
+
+/**
+ * Creates a new announcement. (Admin only)
+ * @param {Object} announcementData - The content of the new announcement.
+ * @returns {Promise<Object>} The newly created announcement object.
+ */
+export const createAnnouncement = (announcementData) => {
+  return apiCall('createAnnouncement', announcementData);
+};

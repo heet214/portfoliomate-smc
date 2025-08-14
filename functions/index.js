@@ -162,7 +162,43 @@ async function handleSendMessage(data, sender) {
     return { success: true, message: "Message sent." };
 }
 
+async function handleCreateAnnouncement(data, adminUser) {
+    const { title, content, category, categoryColor, imageUrl, isPinned } = data;
+    if (!title || !content || !category) {
+        throw new functions.https.HttpsError('invalid-argument', 'Title, content, and category are required.');
+    }
 
+    const userDoc = await db.collection('users').doc(adminUser.userId).get();
+    if (!userDoc.exists) {
+        throw new functions.https.HttpsError('not-found', 'Admin user profile not found.');
+    }
+    const adminProfile = userDoc.data();
+
+    const announcementRef = db.collection('announcements').doc();
+    const newAnnouncement = {
+        id: announcementRef.id,
+        authorId: adminUser.userId,
+        author: adminProfile.displayName,
+        role: adminProfile.role,
+        avatar: adminProfile.photoURL || `https://ui-avatars.com/api/?name=${adminProfile.displayName}&background=312E81&color=fff`,
+        timestamp: FieldValue.serverTimestamp(),
+        category,
+        categoryColor: categoryColor || 'blue',
+        title,
+        content,
+        imageUrl: imageUrl || null,
+        isPinned: isPinned || false,
+    };
+
+    await announcementRef.set(newAnnouncement);
+    return newAnnouncement;
+}
+
+async function handleGetAnnouncements() {
+    const snapshot = await db.collection('announcements').orderBy('isPinned', 'desc').orderBy('timestamp', 'desc').get();
+    if (snapshot.empty) return [];
+    return snapshot.docs.map(doc => doc.data());
+}
 
 // --- MAIN API HANDLER (Updated Structure) ---
 
@@ -276,6 +312,31 @@ exports.apiHandler = functions.https.onRequest((req, res) => {
                     case "sendMessage":
                         const mockAdminUser1 = { userId: "pm_admin_01", role: "admin" };
                         result = await handleSendMessage(data, mockAdminUser1);
+                        res.status(200).json(result);
+                        return;
+
+                    // case "createAnnouncement":
+                    //     requireAdmin(req, res, async () => {
+                    //         result = await handleCreateAnnouncement(data, req.user);
+                    //         res.status(200).json(result);
+                    //     });
+                    //     return;
+
+                    // case "getAnnouncements":
+                    //     requireAuth(req, res, async () => {
+                    //         result = await handleGetAnnouncements();
+                    //         res.status(200).json(result);
+                    //     });
+                    //     return;
+
+                    case "createAnnouncement":
+                        const mockAdminUser2 = { userId: "pm_admin_01", role: "admin" };
+                        result = await handleCreateAnnouncement(data, mockAdminUser2);
+                        res.status(200).json(result);
+                        return;
+
+                    case "getAnnouncements":
+                        result = await handleGetAnnouncements();
                         res.status(200).json(result);
                         return;
 

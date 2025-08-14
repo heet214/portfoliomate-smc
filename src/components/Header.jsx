@@ -70,7 +70,7 @@ function Header({ setMobileOpen }) {
                                     <img src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}&background=312E81&color=fff`} alt="User Avatar" className="w-10 h-10 rounded-full object-cover"/>
                                     <div className="hidden sm:block text-left">
                                         <div className="font-semibold text-gray-800 text-sm">{user.displayName}</div>
-                                        <div className="text-xs text-gray-500">{user.roles.isPortfoliomateAdmin ? 'Platform Admin' : 'Stakeholder'}</div>
+                                        <div className="text-xs text-gray-500">{user.role === 'admin' ? 'Platform Admin' : 'Stakeholder'}</div>
                                     </div>
                                 </button>
                                 <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200">

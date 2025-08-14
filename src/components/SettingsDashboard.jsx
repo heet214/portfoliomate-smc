@@ -24,6 +24,7 @@ const SettingsItem = ({ icon, title, description, to }) => (
 
 function SettingsDashboard() {
     const { user } = useAuth();
+    const isAdmin = user?.role === 'admin';
 
     return (
         <div className="">
@@ -33,18 +34,22 @@ function SettingsDashboard() {
                     <p className="text-sm text-gray-500 mt-1">{user?.email || 'N/A'}</p>
                 </div>
                 <div className="divide-y divide-gray-200">
-                    <SettingsItem 
-                        icon={<UserPlusIcon />}
-                        title="Add Employee" 
-                        description="Create a new login account for a team member." 
-                        to="/settings/add-employee" 
-                    />
-                    <SettingsItem 
-                        icon={<UsersIcon />}
-                        title="View Employees" 
-                        description="View and manage all employee accounts." 
-                        to="/settings/view-employees" 
-                    />
+                    {isAdmin && (
+                        <>
+                            <SettingsItem 
+                                icon={<UserPlusIcon />}
+                                title="Add Employee" 
+                                description="Create a new login account for a team member." 
+                                to="/settings/add-employee" 
+                            />
+                            <SettingsItem 
+                                icon={<UsersIcon />}
+                                title="View Employees" 
+                                description="View and manage all employee accounts." 
+                                to="/settings/view-employees" 
+                            />
+                        </>
+                    )}
                     <SettingsItem 
                         icon={<KeyIcon />}
                         title="Reset Password" 

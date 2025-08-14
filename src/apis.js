@@ -52,4 +52,18 @@ const getBaseUrl = () => {
   export const logoutUser = () => {
     return apiCall('logout', {});
   };
+
+  /**
+ * Creates a new employee account.
+ * This must be called by an authenticated admin.
+ * @param {Object} employeeData - The new employee's details.
+ * @returns {Promise<Object>}
+ */
+export const addEmployee = (employeeData) => {
+  return apiCall('addEmployee', employeeData);
+};
+
+export const getEmployees = () => {
+  return apiCall('getEmployees', {});
+};
   

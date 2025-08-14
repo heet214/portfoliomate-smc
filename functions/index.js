@@ -9,13 +9,29 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
+const { FieldValue } = require("firebase-admin/firestore");
 admin.initializeApp();
 const db = admin.firestore();
 
 const JWT_SECRET = "DEFAULT_FALLBACK_SECRET_KEY_FOR_LOCAL_DEV";
 // const JWT_SECRET = functions.config().jwt.secret || "DEFAULT_FALLBACK_SECRET_KEY_FOR_LOCAL_DEV";
 
-// --- AUTHENTICATION LOGIC (No changes here) ---
+const requireAdmin = (req, res, next) => {
+    const token = req.cookies.authToken;
+    if (!token) {
+        return res.status(403).json({ success: false, error: "Authentication required." });
+    }
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        if (decoded.role !== 'admin') { // Simplified admin check
+            return res.status(403).json({ success: false, error: "Admin privileges required." });
+        }
+        req.user = decoded; // Attach user info (userId, role) to the request
+        next();
+    } catch (error) {
+        return res.status(403).json({ success: false, error: "Invalid or expired token." });
+    }
+};
 
 async function handleLogin(data) {
     const { email, password } = data;
@@ -33,7 +49,7 @@ async function handleLogin(data) {
         throw new functions.https.HttpsError('unauthenticated', 'Invalid credentials.');
     }
     const { passwordHash, ...userProfile } = userData;
-    const token = jwt.sign({ userId: userProfile.userId, roles: userProfile.roles }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ userId: userProfile.userId, role: userProfile.role }, JWT_SECRET, { expiresIn: '7d' });
     return { token, userProfile };
 }
 
@@ -48,6 +64,51 @@ async function verifySession(token) {
     }
     const { passwordHash, ...userProfile } = userDoc.data();
     return userProfile;
+}
+
+async function handleAddEmployee(data, adminUser) {
+    const { name, email, password, role, parentCompany, photoURL } = data;
+    if (!name || !email || !password || !role || !parentCompany) {
+        throw new functions.https.HttpsError('invalid-argument', 'Missing required employee details.');
+    }
+
+    const saltRounds = 12;
+    const passwordHash = await bcrypt.hash(password, saltRounds);
+
+    const newUserRef = db.collection('users').doc(); // Auto-generate ID
+    const newEmployee = {
+        userId: newUserRef.id,
+        displayName: name,
+        email,
+        passwordHash,
+        photoURL: photoURL || null,
+        role, // e.g., 'employee'
+        parentCompanyId: adminUser.userId,
+        parentCompanyName: parentCompany,
+        createdAt: FieldValue.serverTimestamp(),
+    };
+
+    await newUserRef.set(newEmployee);
+    const { passwordHash: _, ...employeeProfile } = newEmployee;
+    return employeeProfile;
+}
+
+async function handleGetEmployees(adminUser) {
+    const employeesQuery = await db.collection('users')
+        .where('role', '==', 'employee')
+        .where('parentCompanyId', '==', adminUser.userId)
+        .get();
+
+    if (employeesQuery.empty) {
+        return [];
+    }
+
+    const employees = employeesQuery.docs.map(doc => {
+        const { passwordHash, ...employeeData } = doc.data();
+        return employeeData;
+    });
+
+    return employees;
 }
 
 
@@ -99,6 +160,47 @@ exports.apiHandler = functions.https.onRequest((req, res) => {
                         res.clearCookie('authToken');
                         result = { success: true, message: "Logged out successfully." };
                         break;
+
+                    case "addEmployee":
+                        // First, run the admin check middleware
+                        requireAdmin(req, res, async () => {
+                            try {
+                                result = await handleAddEmployee(data, req.user);
+                                res.status(200).json(result);
+                            } catch (error) {
+                                res.status(error.code === 'invalid-argument' ? 400 : 500).json({ success: false, error: error.message });
+                            }
+                        });
+
+                        try {
+                            // We are creating a mock admin user object to pass to the function
+                            const mockAdminUser = { userId: "pm_admin_01", role: "admin" };
+                            result = await handleAddEmployee(data, mockAdminUser);
+                            res.status(200).json(result);
+                        } catch (error) {
+                            res.status(error.code === 'invalid-argument' ? 400 : 500).json({ success: false, error: error.message });
+                        }
+                        return; // Return early as requireAdmin handles the response
+
+                    case "getEmployees":
+                        // requireAdmin(req, res, async () => {
+                        //     try {
+                        //         result = await handleGetEmployees(req.user);
+                        //         res.status(200).json(result);
+                        //     } catch (error) {
+                        //         res.status(500).json({ success: false, error: error.message });
+                        //     }
+                        // });
+                        // return;
+                        try {
+                            // We are creating a mock admin user object to pass to the function
+                            const mockAdminUser = { userId: "pm_admin_01", role: "admin" };
+                            result = await handleGetEmployees( mockAdminUser);
+                            res.status(200).json(result);
+                        } catch (error) {
+                            res.status(error.code === 'invalid-argument' ? 400 : 500).json({ success: false, error: error.message });
+                        }
+
 
                     default:
                         return res.status(400).json({ success: false, error: "Invalid request type" });

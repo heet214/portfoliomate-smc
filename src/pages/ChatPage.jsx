@@ -16,7 +16,7 @@ function ChatPage() {
 
   return (
     // The main container now grows to fill the available space from App.js
-    <div className="flex flex-1 h-full bg-white border-t border-gray-200">
+    <div className="flex flex-1 h-full bg-white">
       {/* Chat List Pane: Fixed width on desktop, full width on mobile */}
       <div 
         className={`

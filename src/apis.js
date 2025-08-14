@@ -66,4 +66,24 @@ export const addEmployee = (employeeData) => {
 export const getEmployees = () => {
   return apiCall('getEmployees', {});
 };
+
+/**
+ * Fetches all users in the system to start conversations with.
+ * @returns {Promise<Array>} A list of user objects.
+ */
+export const getAllUsers = () => {
+  return apiCall('getAllUsers', {});
+};
+
+/**
+ * Sends a new chat message.
+ * @param {Object} messageData - The message details.
+ * @param {string} messageData.recipientId - The ID of the user receiving the message.
+ * @param {string} messageData.text - The content of the message.
+ * @param {string} messageData.chatRoomId - The unique ID for the chat room.
+ * @returns {Promise<Object>}
+ */
+export const sendMessage = (messageData) => {
+  return apiCall('sendMessage', messageData);
+};
   

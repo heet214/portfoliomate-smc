@@ -33,6 +33,20 @@ const requireAdmin = (req, res, next) => {
     }
 };
 
+const requireAuth = (req, res, next) => {
+    const token = req.cookies.authToken;
+    if (!token) {
+        return res.status(403).json({ success: false, error: "Authentication required." });
+    }
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded; // Attach user info (userId, role)
+        next();
+    } catch (error) {
+        return res.status(403).json({ success: false, error: "Invalid or expired token." });
+    }
+};
+
 async function handleLogin(data) {
     const { email, password } = data;
     if (!email || !password) {
@@ -110,6 +124,44 @@ async function handleGetEmployees(adminUser) {
 
     return employees;
 }
+
+async function handleGetAllUsers(currentUser) {
+    const usersSnapshot = await db.collection('users').get();
+    const allUsers = [];
+    usersSnapshot.forEach(doc => {
+        if (doc.id !== currentUser.userId) {
+            const { passwordHash, ...userData } = doc.data();
+            allUsers.push(userData);
+        }
+    });
+    return allUsers;
+}
+
+async function handleSendMessage(data, sender) {
+    const { recipientId, text, chatRoomId } = data;
+    if (!recipientId || !text || !chatRoomId) {
+        throw new functions.https.HttpsError('invalid-argument', 'Missing required message data.');
+    }
+
+    const message = {
+        senderId: sender.userId,
+        text,
+        timestamp: FieldValue.serverTimestamp(),
+    };
+
+    // Add message to the subcollection
+    await db.collection('chats').doc(chatRoomId).collection('messages').add(message);
+
+    // Update the lastMessage on the main chat document for previews
+    await db.collection('chats').doc(chatRoomId).set({
+        participants: [sender.userId, recipientId],
+        lastMessage: message,
+        updatedAt: FieldValue.serverTimestamp(),
+    }, { merge: true });
+
+    return { success: true, message: "Message sent." };
+}
+
 
 
 // --- MAIN API HANDLER (Updated Structure) ---
@@ -195,12 +247,37 @@ exports.apiHandler = functions.https.onRequest((req, res) => {
                         try {
                             // We are creating a mock admin user object to pass to the function
                             const mockAdminUser = { userId: "pm_admin_01", role: "admin" };
-                            result = await handleGetEmployees( mockAdminUser);
+                            result = await handleGetEmployees(mockAdminUser);
                             res.status(200).json(result);
                         } catch (error) {
                             res.status(error.code === 'invalid-argument' ? 400 : 500).json({ success: false, error: error.message });
                         }
 
+                    // case "getAllUsers":
+                    //     requireAuth(req, res, async () => {
+                    //         result = await handleGetAllUsers(req.user);
+                    //         res.status(200).json(result);
+                    //     });
+                    //     return;
+
+                    // case "sendMessage":
+                    //     requireAuth(req, res, async () => {
+                    //         result = await handleSendMessage(data, req.user);
+                    //         res.status(200).json(result);
+                    //     });
+                    //     return;
+
+                    case "getAllUsers":
+                        const mockAdminUser = { userId: "pm_admin_01", role: "admin" };
+                        result = await handleGetAllUsers(mockAdminUser);
+                        res.status(200).json(result);
+                        return;
+
+                    case "sendMessage":
+                        const mockAdminUser1 = { userId: "pm_admin_01", role: "admin" };
+                        result = await handleSendMessage(data, mockAdminUser1);
+                        res.status(200).json(result);
+                        return;
 
                     default:
                         return res.status(400).json({ success: false, error: "Invalid request type" });

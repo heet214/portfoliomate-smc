@@ -35,11 +35,24 @@ function Header({ setMobileOpen }) {
 
         // Handle stakeholder pages
         if (pathnames[0] === 'stakeholders') {
-            breadcrumbs.push({ name: 'Stakeholders', path: '/stakeholders' });
-            if (pathnames[1]) { const typeName = pathnames[1].charAt(0).toUpperCase() + pathnames[1].slice(1); breadcrumbs.push({ name: typeName, path: `/stakeholders/${pathnames[1]}` }); }
-            if (pathnames[2]) { breadcrumbs.push({ name: 'Profile', path: location.pathname }); }
-            return breadcrumbs;
-        }
+          breadcrumbs.push({ name: 'Stakeholders', path: '/stakeholders' });
+      
+          if (pathnames[1]) {
+              const typeName = pathnames[1].charAt(0).toUpperCase() + pathnames[1].slice(1);
+              breadcrumbs.push({ name: typeName, path: `/stakeholders/${pathnames[1]}` });
+          }
+      
+          if (pathnames[2]) {
+              breadcrumbs.push({ name: 'Profile', path: `/stakeholders/${pathnames[1]}/${pathnames[2]}` });
+          }
+      
+          if (pathnames[3] === 'edit') {
+              breadcrumbs.push({ name: 'Edit', path: location.pathname });
+          }
+      
+          return breadcrumbs;
+      }
+      
 
         const name = pathnames[0].charAt(0).toUpperCase() + pathnames[0].slice(1);
         breadcrumbs.push({ name: name, path: `/${pathnames[0]}` });

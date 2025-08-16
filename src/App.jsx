@@ -21,12 +21,12 @@ const AppLayout = () => {
 
 	// Check the current route to apply styles conditionally
 	const isEditPage = location.pathname.endsWith('/edit');
-	const isListPage = location.pathname.startsWith('/stakeholders/');
+	const isListPage = location.pathname.startsWith('/stakeholders/') && !isEditPage;
 	const isChatPage = location.pathname.startsWith('/chats');
 	const isProfilePage = location.pathname.includes('/stakeholders/') && location.pathname.split('/').length === 4;
 
 	// Remove padding for full-width pages like list, chat, and profile
-	const mainPadding = isListPage || isChatPage || isProfilePage || isEditPage ? '' : 'p-4 sm:p-6 lg:p-8';
+	const mainPadding = isListPage || isChatPage || isProfilePage ? '' : 'p-4 sm:p-6 lg:p-8';
 	const mainBg = isProfilePage ? 'bg-white' : 'bg-gray-50';
 
 	return (
